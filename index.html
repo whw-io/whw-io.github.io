@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>拾光·导航 | 个人空间</title>
+    <title>拾光 | 王鸿伟的个人空间</title>
     <!-- 引入 Google Fonts 提升现代感 -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.cn/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <!-- Font Awesome 6 (免费图标库) 增强视觉质感 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.css">
+    
     <style>
         * {
             margin: 0;
@@ -127,7 +128,7 @@
             border-radius: 4px;
         }
 
-        /* 网格布局 —— 响应式质感卡片区 */
+        /* 网格布局 —— 响应式质感卡片区，自动适配手机屏幕 */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -312,7 +313,7 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* 响应式布局强化 */
+        /* 响应式布局强化 —— 完美适配手机端 */
         @media (max-width: 780px) {
             .wrapper {
                 padding: 1.5rem;
@@ -353,6 +354,12 @@
             .hero-badge {
                 font-size: 0.7rem;
             }
+            .card-icon {
+                font-size: 2.5rem;
+            }
+            .card-description {
+                font-size: 0.88rem;
+            }
         }
 
         /* 入场动画 */
@@ -370,6 +377,7 @@
         .cards-grid .card {
             animation: fadeSlideUp 0.6s cubic-bezier(0.15, 0.9, 0.25, 1) backwards;
         }
+        /* 调整动画延迟使顺序视觉舒服，依旧按照文档流顺序依次出现 */
         .cards-grid .card:nth-child(1) { animation-delay: 0.05s; }
         .cards-grid .card:nth-child(2) { animation-delay: 0.15s; }
         .cards-grid .card:nth-child(3) { animation-delay: 0.25s; }
@@ -381,18 +389,33 @@
         <!-- 头部区域：优雅展现身份 -->
         <div class="hero">
             <div class="hero-badge">
-                <i class="fas fa-compass" style="margin-right: 6px;"></i> 数字·栖所
+                <i class="fas fa-compass" style="margin-right: 6px;"></i> 数字空间
             </div>
-            <h1>灵感漫游指南</h1>
+            <h1>王鸿伟的个人空间</h1>
             <div class="hero-desc">
-                探索 · 记录 · 沉淀 · 遇见
+                探索 · 思考 · 记录 · 沉淀
             </div>
             <div class="accent-line"></div>
         </div>
 
-        <!-- 四大导航板块网格 -->
+        <!-- 四大导航板块网格 —— 顺序已调整：个人简介置于首位 -->
         <div class="cards-grid">
-            <!-- 卡片 1：技术博客 -->
+            <!-- 卡片 1：个人简介 (原第四位移至首位) -->
+            <div class="card" data-section="about" data-name="个人简介">
+                <div class="card-icon">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <h3>个人简介</h3>
+                <div class="card-description">
+                    关于我，成长历程，热爱与创造。<br>
+                    保持好奇，持续发光。
+                </div>
+                <div class="card-link-hint">
+                    <span>了解故事</span> <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+
+            <!-- 卡片 2：技术博客 -->
             <div class="card" data-section="tech" data-name="技术博客">
                 <div class="card-icon">
                     <i class="fas fa-laptop-code"></i>
@@ -407,7 +430,7 @@
                 </div>
             </div>
 
-            <!-- 卡片 2：个人日记 -->
+            <!-- 卡片 3：个人日记 -->
             <div class="card" data-section="diary" data-name="个人日记">
                 <div class="card-icon">
                     <i class="fas fa-pen-fancy"></i>
@@ -422,7 +445,7 @@
                 </div>
             </div>
 
-            <!-- 卡片 3：旅游记录 -->
+            <!-- 卡片 4：旅游记录 -->
             <div class="card" data-section="travel" data-name="旅游记录">
                 <div class="card-icon">
                     <i class="fas fa-map-marked-alt"></i>
@@ -436,30 +459,14 @@
                     <span>启程远方</span> <i class="fas fa-arrow-right"></i>
                 </div>
             </div>
-
-            <!-- 卡片 4：个人简介 -->
-            <div class="card" data-section="about" data-name="个人简介">
-                <div class="card-icon">
-                    <i class="fas fa-user-astronaut"></i>
-                </div>
-                <h3>个人简介</h3>
-                <div class="card-description">
-                    关于我，成长历程，热爱与创造。<br>
-                    保持好奇，持续发光。
-                </div>
-                <div class="card-link-hint">
-                    <span>了解故事</span> <i class="fas fa-arrow-right"></i>
-                </div>
-            </div>
         </div>
 
         <!-- 底部氛围信息，展示美观和版权 -->
         <div class="footer">
-            <div>© 2025 拾光导航 · 内在引力场</div>
+            <div>© 2026 拾光 · 王鸿伟的个人空间</div>
             <div class="footer-links">
                 <span><i class="far fa-compass"></i> 探索无界</span>
-                <span><i class="far fa-heart"></i> 质感设计</span>
-                <span><i class="far fa-star"></i> 四个世界</span>
+                <span><i class="far fa-heart"></i> 记录浮光</span>
             </div>
         </div>
     </div>
@@ -468,19 +475,17 @@
         (function() {
             // 卡片映射: 优雅的导航反馈 (占位演示模式，将来可直接替换为真实链接)
             const sectionMap = {
+                about: {
+                    displayName: "个人简介",
+                },
                 tech: {
                     displayName: "技术博客",
-                    // 未来可以直接替换为真实地址如: "https://yourblog.com/tech"
-                    // 本演示展示质感toast，开发人员可取消注释跳转代码
                 },
                 diary: {
                     displayName: "个人日记",
                 },
                 travel: {
                     displayName: "旅游记录",
-                },
-                about: {
-                    displayName: "个人简介",
                 }
             };
 
@@ -488,10 +493,8 @@
             let activeToast = null;
 
             function showMessage(title, sectionKey) {
-                // 获取显示名
                 const info = sectionMap[sectionKey];
                 const displayTitle = info ? info.displayName : title;
-                // 获取已有的toast并清理
                 if (activeToast && document.body.contains(activeToast)) {
                     activeToast.classList.remove('show');
                     setTimeout(() => {
@@ -500,10 +503,8 @@
                     }, 200);
                 }
 
-                // 创建新toast元素
                 const toast = document.createElement('div');
                 toast.className = 'toast-notify';
-                // 根据版块不同，微调图标样式
                 let iconHtml = '<i class="fas fa-hand-peace"></i>';
                 if (sectionKey === 'tech') iconHtml = '<i class="fas fa-microchip"></i>';
                 else if (sectionKey === 'diary') iconHtml = '<i class="fas fa-feather-alt"></i>';
@@ -512,13 +513,11 @@
                 
                 toast.innerHTML = `${iconHtml} <span>✨ 导航 · ${displayTitle} ✨</span> <span style="font-size:0.75rem; margin-left:6px;">(演示模式 | 未来将通往专属空间)</span>`;
                 document.body.appendChild(toast);
-                // 强制重绘后添加show类
                 setTimeout(() => {
                     toast.classList.add('show');
                 }, 10);
                 activeToast = toast;
 
-                // 3秒后自动消失
                 setTimeout(() => {
                     if (toast && toast.classList) {
                         toast.classList.remove('show');
@@ -530,69 +529,54 @@
                 }, 2800);
             }
 
-            // 获取所有卡片，绑定点击事件
             const cards = document.querySelectorAll('.card');
             
-            // 为四个卡片增加自定义点击效果 (同时完全支持未来替换真实URL)
             cards.forEach(card => {
-                // 获取数据标识
                 const section = card.getAttribute('data-section');
                 const nameAttr = card.getAttribute('data-name');
                 
-                // 设置鼠标样式为手型
                 card.style.cursor = 'pointer';
                 
-                // 添加点击监听器
                 card.addEventListener('click', (e) => {
-                    // 防止冒泡干扰
                     e.stopPropagation();
                     let targetSection = section;
                     let displayTitle = nameAttr;
                     
-                    // 根据section补充
                     if (!targetSection) {
-                        // 降级策略，通过h3文本判断
                         const heading = card.querySelector('h3');
                         if (heading) {
                             const text = heading.innerText;
-                            if (text.includes('技术博客')) targetSection = 'tech';
+                            if (text.includes('个人简介')) targetSection = 'about';
+                            else if (text.includes('技术博客')) targetSection = 'tech';
                             else if (text.includes('个人日记')) targetSection = 'diary';
                             else if (text.includes('旅游记录')) targetSection = 'travel';
-                            else if (text.includes('个人简介')) targetSection = 'about';
                             else targetSection = 'general';
                         } else {
                             targetSection = 'general';
                         }
                     }
                     
-                    // 优雅提醒交互（演示模式下显示质感toast）
-                    // 若未来希望替换成真实超链接跳转，请取消下面的注释代码块并注释 showMessage 行
-                    /* ===== 真实跳转替换示例 ===== 
-                       const realLinks = {
-                           tech: '/tech-blog',
-                           diary: '/personal-diary',
-                           travel: '/travel-journal',
-                           about: '/about-me'
-                       };
-                       if(realLinks[targetSection]) {
-                           window.location.href = realLinks[targetSection];
-                       } else {
-                           showMessage(displayTitle || '板块', targetSection);
-                       }
-                       目前保留演示模式，以toast来凸显设计感，同时方便您后续修改。
+                    /* 真实跳转示例 (如需启用请取消注释并将下方 showMessage 注释)
+                    const realLinks = {
+                        about: '/about-me',
+                        tech: '/tech-blog',
+                        diary: '/personal-diary',
+                        travel: '/travel-journal'
+                    };
+                    if(realLinks[targetSection]) {
+                        window.location.href = realLinks[targetSection];
+                    } else {
+                        showMessage(displayTitle || '板块', targetSection);
+                    }
                     */
-                    
-                    // 当前采用优雅反馈模式（演示效果，点击后显示精致通知）
                     showMessage(displayTitle || '板块', targetSection);
                     
-                    // 可选额外震动反馈? 增加细微脉冲效果，用户体验更好（极轻触感）
                     card.style.transform = 'scale(0.99)';
                     setTimeout(() => {
                         if (card) card.style.transform = '';
                     }, 120);
                 });
                 
-                // 增加轻微的键盘可访问性 (Enter键触发)
                 card.setAttribute('tabindex', '0');
                 card.setAttribute('role', 'button');
                 card.setAttribute('aria-label', `前往 ${nameAttr || '板块'}`);
@@ -604,9 +588,8 @@
                 });
             });
             
-            // 附加说明: 控制台友好提示，告知开发者可轻松替换真实链接
             console.log(
-                "%c✨ 拾光导航已启动 | 替换链接方法: 在 script 区域内找到 showMessage 调用上方的注释块，配置 realLinks 对象即可实现真实跳转。",
+                "%c✨ 拾光导航已启动 | 个人简介已置顶 | 响应式手机端优化 | 替换真实链接: 配置 realLinks 对象即可",
                 "color: #6C8EFF; font-size: 12px; font-family: monospace;"
             );
         })();
