@@ -78,25 +78,32 @@
             padding: 2rem 2rem 3rem;
         }
 
-        /* 头部区域 —— 简约且有灵魂 */
+        /* 头部区域 —— 圆形头像框替换原有的“数字空间”徽章 */
         .hero {
             text-align: center;
             margin-bottom: 4rem;
             animation: fadeSlideUp 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
         }
 
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(4px);
-            padding: 0.3rem 1.2rem;
-            border-radius: 60px;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            font-weight: 500;
-            border: 0.5px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 1.2rem;
-            color: #B9D0FF;
+        /* 圆形头像框容器 */
+        .avatar-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(99, 143, 255, 0.3);
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            background: #1E2A3A; /* 图片加载前的背景色 */
+        }
+        .avatar:hover {
+            transform: scale(1.02);
+            box-shadow: 0 18px 32px -10px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(99, 143, 255, 0.5);
         }
 
         .hero h1 {
@@ -334,6 +341,10 @@
             .card h3 {
                 font-size: 1.6rem;
             }
+            .avatar {
+                width: 80px;
+                height: 80px;
+            }
             .toast-notify {
                 white-space: normal;
                 max-width: 85vw;
@@ -351,8 +362,9 @@
             .hero h1 {
                 font-size: 2rem;
             }
-            .hero-badge {
-                font-size: 0.7rem;
+            .avatar {
+                width: 70px;
+                height: 70px;
             }
             .card-icon {
                 font-size: 2.5rem;
@@ -386,10 +398,12 @@
 </head>
 <body>
     <div class="wrapper">
-        <!-- 头部区域：优雅展现身份 -->
+        <!-- 头部区域：圆形头像框替换原先的“数字空间”徽章 -->
         <div class="hero">
-            <div class="hero-badge">
-                <i class="fas fa-compass" style="margin-right: 6px;"></i> 数字空间
+            <!-- 圆形头像框 (请将 src 替换为真实图片地址) -->
+            <div class="avatar-wrapper">
+                <img class="avatar" src="http://photogzmaz.photo.store.qq.com/psc?/V51reqF9314cf049MCH11BDYoX07c0wb/TmEUgtj9EK6.7V8ajmQrEGnK0JxWz9Pu*zrMljRin6..4D6Xq.cB7ovo8153MFLzU4yjgDhTPifH.T1XEir3Abh6PglDHYos0MIWDKlWrA4!/b&bo=cAFiAXABYgEDByI!&rf=viewer_4&t=5" alt="个人头像" 
+                     onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%2334495e\'/%3E%3Ctext x=\'50\' y=\'68\' text-anchor=\'middle\' fill=\'%23ffffff\' font-size=\'60\' font-family=\'Arial\'%3E%E7%8E%8B%3C/text%3E%3C/svg%3E';">
             </div>
             <h1>王鸿伟的个人空间</h1>
             <div class="hero-desc">
@@ -398,9 +412,9 @@
             <div class="accent-line"></div>
         </div>
 
-        <!-- 四大导航板块网格 —— 顺序已调整：个人简介置于首位 -->
+        <!-- 四大导航板块网格 —— 个人简介置于首位 -->
         <div class="cards-grid">
-            <!-- 卡片 1：个人简介 (原第四位移至首位) -->
+            <!-- 卡片 1：个人简介 -->
             <div class="card" data-section="about" data-name="个人简介">
                 <div class="card-icon">
                     <i class="fas fa-user-astronaut"></i>
@@ -475,18 +489,10 @@
         (function() {
             // 卡片映射: 优雅的导航反馈 (占位演示模式，将来可直接替换为真实链接)
             const sectionMap = {
-                about: {
-                    displayName: "个人简介",
-                },
-                tech: {
-                    displayName: "技术博客",
-                },
-                diary: {
-                    displayName: "个人日记",
-                },
-                travel: {
-                    displayName: "旅游记录",
-                }
+                about: { displayName: "个人简介" },
+                tech: { displayName: "技术博客" },
+                diary: { displayName: "个人日记" },
+                travel: { displayName: "旅游记录" }
             };
 
             // 创建toast容器
@@ -588,10 +594,7 @@
                 });
             });
             
-            console.log(
-                "%c✨ 拾光导航已启动 | 个人简介已置顶 | 响应式手机端优化 | 替换真实链接: 配置 realLinks 对象即可",
-                "color: #6C8EFF; font-size: 12px; font-family: monospace;"
-            );
+            console.log("%c✨ 拾光导航已启动 | 圆形头像框已替换“数字空间” | 请将头像图片链接替换为真实地址", "color: #6C8EFF; font-size: 12px; font-family: monospace;");
         })();
     </script>
 </body>
