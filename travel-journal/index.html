@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>旅游记录 · 目的地导航</title>
+    <!-- Google Fonts 国内镜像加速 -->
+    <link href="https://fonts.googleapis.cn/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 国内加速镜像 -->
+    <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at 10% 20%, #0B1120, #0A0F1A, #03050B);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #EFF3FC;
+            line-height: 1.5;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 噪点纹理 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjY1IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4wMyIgLz48L3N2Zz4=');
+            background-repeat: repeat;
+            pointer-events: none;
+            opacity: 0.35;
+            z-index: 0;
+        }
+
+        /* 动态光晕 */
+        body::after {
+            content: "";
+            position: fixed;
+            width: 80vw;
+            height: 80vw;
+            background: radial-gradient(circle, rgba(79, 125, 193, 0.15) 0%, rgba(0,0,0,0) 70%);
+            top: -20vh;
+            right: -20vw;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(60px);
+            z-index: 0;
+            animation: floatGlow 18s infinite alternate ease-in-out;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0,0) scale(1); opacity: 0.4; }
+            100% { transform: translate(30px,40px) scale(1.2); opacity: 0.7; }
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 1360px;
+            margin: 0 auto;
+            padding: 2rem 2rem 3rem;
+        }
+
+        /* 头部区域 */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeSlideUp 0.6s ease forwards;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(4px);
+            padding: 0.3rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border: 0.5px solid rgba(255,255,255,0.2);
+            margin-bottom: 1rem;
+            color: #B9D0FF;
+        }
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFFFFF, #9BB9FF, #C0D4FF);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .hero-desc {
+            font-size: 1rem;
+            color: #B4CAF0;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .accent-line {
+            width: 70px;
+            height: 3px;
+            background: linear-gradient(90deg, #3B82F6, #A855F7);
+            margin: 1rem auto 0;
+            border-radius: 4px;
+        }
+
+        /* 返回首页按钮 */
+        .back-nav {
+            margin-bottom: 2rem;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(18,25,45,0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #B9D0FF;
+            border: 1px solid rgba(72,110,180,0.4);
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        .back-btn i {
+            font-size: 0.8rem;
+            transition: transform 0.2s;
+        }
+        .back-btn:hover {
+            background: rgba(30,45,75,0.85);
+            border-color: #6C8EFF;
+            color: white;
+            gap: 0.7rem;
+        }
+        .back-btn:hover i {
+            transform: translateX(-3px);
+        }
+
+        /* 卡片网格 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0 2rem;
+        }
+        .card {
+            background: rgba(18,25,45,0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 1.8rem;
+            padding: 1.6rem 1.5rem;
+            border: 1px solid rgba(72,110,180,0.25);
+            transition: all 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
+            cursor: pointer;
+            box-shadow: 0 20px 35px -15px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.05), transparent 70%);
+            pointer-events: none;
+            border-radius: inherit;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(99,143,255,0.6);
+            background: rgba(22,34,58,0.75);
+            box-shadow: 0 30px 45px -15px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,143,255,0.2);
+        }
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(145deg, #D9E6FF, #ADC4FF);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            width: fit-content;
+        }
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #F1F5FF;
+        }
+        .card-desc {
+            font-size: 0.85rem;
+            color: #B9D0F0;
+            line-height: 1.4;
+            margin-bottom: 1.2rem;
+            flex: 1;
+        }
+        .card-link-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #94A9FF;
+            transition: gap 0.2s;
+        }
+        .card:hover .card-link-hint {
+            gap: 0.7rem;
+            color: #C0D6FF;
+        }
+        .sub-items {
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .sub-tag {
+            background: rgba(59,130,246,0.2);
+            border-radius: 20px;
+            padding: 0.2rem 0.7rem;
+            color: #ADC6FF;
+            transition: 0.1s;
+        }
+        .sub-tag:hover {
+            background: rgba(59,130,246,0.4);
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.8rem;
+            color: #7A8FB0;
+        }
+
+        @media (max-width: 780px) {
+            .wrapper { padding: 1.2rem; }
+            .hero h1 { font-size: 2rem; }
+            .cards-grid { gap: 1.2rem; }
+            .card { padding: 1.2rem; }
+            .card h3 { font-size: 1.3rem; }
+        }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .cards-grid .card { animation: fadeSlideUp 0.5s backwards; }
+        .cards-grid .card:nth-child(1) { animation-delay: 0.05s; }
+        .cards-grid .card:nth-child(2) { animation-delay: 0.1s; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="back-nav">
+        <a href="../index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> 返回主站导航
+        </a>
+    </div>
+
+    <div class="hero">
+        <div class="hero-badge">
+            <i class="fas fa-map-marked-alt"></i> 行路·漫游
+        </div>
+        <h1>🗺️ 旅游记录</h1>
+        <div class="hero-desc">用足迹丈量世界 · 每一程都是诗</div>
+        <div class="accent-line"></div>
+    </div>
+
+    <div class="cards-grid">
+        <!-- 茫崖 · 主卡片 -->
+        <div class="card" data-location="茫崖">
+            <div class="card-icon"><i class="fas fa-mountain-sun"></i></div>
+            <h3>茫崖</h3>
+            <div class="card-desc">青海·茫崖市，苍茫之崖，翡翠湖畔的隐世秘境。</div>
+            <div class="sub-items">
+                <span class="sub-tag" data-href="./茫崖/翡翠湖.html">✨ 翡翠湖</span>
+                <!-- 预留更多子地点，可根据实际增加 -->
+                <!-- <span class="sub-tag">恶魔之眼</span> -->
+            </div>
+            <div class="card-link-hint">
+                <span>探索茫崖</span> <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+
+        <!-- 未来可拓展的其他目的地卡片，占位示例 -->
+        <!-- 卡片2 预留（展示风格一致） 注释掉，用户可自行添加 -->
+        <!--
+        <div class="card">
+            <div class="card-icon"><i class="fas fa-water"></i></div>
+            <h3>青海湖</h3>
+            <div class="card-desc">高原蓝宝石，梦幻圣湖。</div>
+            <div class="card-link-hint"><span>即将上线</span> <i class="fas fa-clock"></i></div>
+        </div>
+        -->
+    </div>
+
+    <div class="footer">
+        <span><i class="far fa-compass"></i> 步履不停 · 记录真实</span>
+    </div>
+</div>
+
+<script>
+    // 为所有子标签和卡片添加点击跳转逻辑，风格与首页一致，使用toast提示或跳转
+    // 由于需要实现跳转到具体的 html 文件（翡翠湖.html），同时保留返回导航能力。
+
+    // 获取所有 .sub-tag 并绑定跳转
+    const subTags = document.querySelectorAll('.sub-tag');
+    subTags.forEach(tag => {
+        const targetUrl = tag.getAttribute('data-href');
+        if (targetUrl) {
+            tag.style.cursor = 'pointer';
+            tag.addEventListener('click', (e) => {
+                e.stopPropagation();
+                window.location.href = targetUrl;
+            });
+        }
+    });
+
+    // 整个卡片点击默认跳转到第一个子地点或展示提示（这里点击茫崖卡片跳转到翡翠湖.html）
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        const firstSub = card.querySelector('.sub-tag');
+        let linkUrl = null;
+        if (firstSub && firstSub.getAttribute('data-href')) {
+            linkUrl = firstSub.getAttribute('data-href');
+        } else {
+            linkUrl = '#'; // 无实际链接时占位
+        }
+        card.addEventListener('click', (e) => {
+            // 防止点到子标签时重复触发（已经单独处理子标签，但事件冒泡到card会引起二次跳转）
+            if (e.target.classList && e.target.classList.contains('sub-tag')) return;
+            if (linkUrl && linkUrl !== '#') {
+                window.location.href = linkUrl;
+            } else {
+                // 优雅提示（可复用轻提示）
+                showTempToast('✨ 更多游记整理中，敬请期待 ✨');
+            }
+        });
+        card.style.cursor = 'pointer';
+    });
+
+    // 简单toast提示（与首页风格相似但更轻量）
+    function showTempToast(msg) {
+        let existingToast = document.querySelector('.temp-toast');
+        if (existingToast) existingToast.remove();
+        const toast = document.createElement('div');
+        toast.className = 'temp-toast';
+        toast.innerText = msg;
+        toast.style.position = 'fixed';
+        toast.style.bottom = '25px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.backgroundColor = 'rgba(12,18,28,0.9)';
+        toast.style.backdropFilter = 'blur(16px)';
+        toast.style.borderRadius = '60px';
+        toast.style.padding = '0.6rem 1.5rem';
+        toast.style.color = '#EFF3FC';
+        toast.style.fontSize = '0.85rem';
+        toast.style.border = '1px solid rgba(82,128,255,0.5)';
+        toast.style.zIndex = '1000';
+        toast.style.whiteSpace = 'nowrap';
+        toast.style.fontFamily = "'Inter', sans-serif";
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            if (toast && toast.remove) toast.remove();
+        }, 2000);
+    }
+
+    // 适应手机端微调
+    console.log('旅游记录导航页已加载，可跳转茫崖/翡翠湖.html');
+</script>
+</body>
+</html>

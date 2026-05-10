@@ -562,22 +562,19 @@
                             targetSection = 'general';
                         }
                     }
-                    
-                    /* 真实跳转示例 (如需启用请取消注释并将下方 showMessage 注释)
+                    // 真实跳转
                     const realLinks = {
                         about: '/about-me',
                         tech: '/tech-blog',
                         diary: '/personal-diary',
-                        travel: '/travel-journal'
+                        travel: '/travel-journal/index.html'
                     };
                     if(realLinks[targetSection]) {
                         window.location.href = realLinks[targetSection];
                     } else {
                         showMessage(displayTitle || '板块', targetSection);
                     }
-                    */
-                    showMessage(displayTitle || '板块', targetSection);
-                    
+            
                     card.style.transform = 'scale(0.99)';
                     setTimeout(() => {
                         if (card) card.style.transform = '';
